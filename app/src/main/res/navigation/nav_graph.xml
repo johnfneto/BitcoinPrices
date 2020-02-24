@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph.xml">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/ProductsListFragment">
 
+    <fragment
+        android:id="@+id/ProductsListFragment"
+        android:name="com.johnfneto.bitcoinprices.ui.ProductsListFragment"
+        tools:layout="@layout/fragment_products_list">
+        <action
+            android:id="@+id/action_goto_product"
+            app:destination="@id/productFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/productFragment"
+        android:name="com.johnfneto.bitcoinprices.ui.ProductFragment"
+        tools:layout="@layout/fragment_product">
+
+    </fragment>
 </navigation>
