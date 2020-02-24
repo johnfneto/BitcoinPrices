@@ -19,7 +19,7 @@ class ProductsViewModel : ViewModel() {
 
     private val productsApi: ProductsApi = Service().createService(ProductsApi::class.java)
 
-    fun callApiMethod() {
+    fun getProductsList() {
         viewModelScope.launch {   // Dispatchers.Main
             val response : Response<ProductsListModel> = getProductsFromServer()
             if (response.isSuccessful) {

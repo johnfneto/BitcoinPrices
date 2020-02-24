@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/ProductsListFragment">
+    app:startDestination="@id/productsListFragment">
 
     <fragment
-        android:id="@+id/ProductsListFragment"
+        android:id="@+id/productsListFragment"
         android:name="com.johnfneto.bitcoinprices.ui.ProductsListFragment"
+        android:label="@string/bitcoin_prices"
         tools:layout="@layout/fragment_products_list">
         <action
             android:id="@+id/action_goto_product"
@@ -19,6 +20,11 @@
         android:id="@+id/productFragment"
         android:name="com.johnfneto.bitcoinprices.ui.ProductFragment"
         tools:layout="@layout/fragment_product">
-
+        <argument
+            android:name="product"
+            app:argType="string" />
+        <argument
+            android:name="operation"
+            app:argType="com.johnfneto.bitcoinprices.ui.TradeType" />
     </fragment>
 </navigation>
