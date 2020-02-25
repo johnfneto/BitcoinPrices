@@ -25,9 +25,9 @@ object Utils {
     }
 
     @JvmStatic
-    fun formatPrice(price: Double): SpannableString {
-        val value = price.toString()
-        val text = SpannableString(value.toString())
+    fun formatPriceSize(price: Double): SpannableString {
+        val value = formatPrice(price)
+        val text = SpannableString(value)
         text.setSpan(
             RelativeSizeSpan(1f), 0, value.indexOf("."),
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
@@ -42,4 +42,10 @@ object Utils {
     @JvmStatic
     fun calculateSpread(buyPrice: Double, sellPrice: Double) =
         String.format("%.2f", (buyPrice - sellPrice))
+
+    @JvmStatic
+    fun formatPrice(price: Double) = String.format("%.2f", price)
+
+    @JvmStatic
+    fun formatUnits(price: Double) = String.format("%.4f", price)
 }

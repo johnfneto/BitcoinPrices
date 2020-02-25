@@ -25,6 +25,6 @@
             app:argType="string" />
         <argument
             android:name="operation"
-            app:argType="com.johnfneto.bitcoinprices.ui.TradeType" />
+            app:argType="com.johnfneto.bitcoinprices.utils.TradeType" />
     </fragment>
 </navigation>

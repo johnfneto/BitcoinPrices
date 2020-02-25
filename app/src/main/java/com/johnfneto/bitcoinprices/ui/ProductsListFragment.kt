@@ -20,7 +20,7 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list),
     SwipeRefreshLayout.OnRefreshListener {
     private val TAG = javaClass.simpleName
 
-    lateinit var productsAdapter: ProductsAdapter
+    private lateinit var productsAdapter: ProductsAdapter
     private var productsList = mutableListOf<ProductModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -28,7 +28,10 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list),
 
         swipeContainer.setOnRefreshListener(this)
         setupRecyclerView()
+        setupDataObserver()
+    }
 
+    private fun setupDataObserver() {
         DataProvider.productsList.observe(viewLifecycleOwner, Observer { liveProductsList ->
             DataProvider.productsList.value?.let {
 
@@ -39,8 +42,7 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list),
                 }
                 swipeContainer.isRefreshing = false
             }
-        })
-    }
+        })    }
 
     private fun setupRecyclerView() {
         val itemDecorator =

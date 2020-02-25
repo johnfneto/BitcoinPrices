@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.johnfneto.bitcoinprices.utils.TradeType" />
+        <import type="com.johnfneto.bitcoinprices.utils.Utils" />
+        <import type="com.johnfneto.bitcoinprices.models.ProductModel" />
+
+        <variable
+            name="product"
+            type="com.johnfneto.bitcoinprices.models.ProductModel" />
+
+        <variable
+            name="enableButton"
+            type="Boolean" />
+
+        <variable
+            name="operation"
+            type="com.johnfneto.bitcoinprices.utils.TradeType" />
+
+    </data>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -7,5 +28,211 @@
         android:paddingStart="@dimen/text_margin"
         android:paddingEnd="@dimen/text_margin">
 
+        <RelativeLayout
+            android:id="@+id/headLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/pricesLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/sellLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@{operation == TradeType.SELL ? @color/sellBackground : @color/colorBackground}"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/text_margin"
+                        android:text="@string/sell_label"
+                        android:textColor="@color/textSellColor"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <TextView
+                        android:id="@+id/sellPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/text_margin"
+                        android:text="@{Utils.formatPriceSize(product.sell)}"
+                        android:textColor="@color/textGreyColor"
+                        android:textSize="@dimen/text_size_xlarge" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/text_margin"
+                        android:text="L: 7,422.18"
+                        android:textColor="@color/textGreyColor"
+                        android:textSize="@dimen/text_size_small" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/buyLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@{operation == TradeType.BUY ? @color/buyBackground : @color/colorBackground}"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="@dimen/text_margin"
+                        android:text="@string/buy_label"
+                        android:textColor="@color/textBuyColor"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <TextView
+                        android:id="@+id/buyPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="@dimen/text_margin"
+                        android:text="@{Utils.formatPriceSize(product.buy)}"
+                        android:textColor="@color/textGreyColor"
+                        android:textSize="@dimen/text_size_xlarge" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:layout_margin="@dimen/text_margin"
+                        android:text="H: 7,422.34"
+                        android:textColor="@color/textGreyColor"
+                        android:textSize="@dimen/text_size_small" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/pricesLayout"
+                android:layout_alignParentBottom="false"
+                android:layout_centerInParent="false"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="@dimen/text_margin"
+                android:layout_marginTop="@dimen/text_margin"
+                android:layout_marginEnd="@dimen/text_margin"
+                android:layout_marginBottom="@dimen/text_margin"
+                android:text="@{Utils.calculateSpread(product.buy, product.sell)}"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_size_small" />
+
+            <TextView
+                android:id="@+id/level1_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="false"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:text="@string/level1_label"
+                android:textColor="@color/colorWhite"
+                android:background="@{operation == TradeType.SELL ? @drawable/label_level1_sell : @drawable/label_level1_buy}"
+                android:textSize="@dimen/text_size_small" />
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_below="@id/headLayout"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider"
+            android:layout_marginTop="@dimen/text_margin"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/text_bottom_margin"
+                    android:text="@string/units"
+                    android:textColor="@color/textBuyColor"
+                    android:textSize="@dimen/text_size_small" />
+
+                <EditText
+                    android:id="@+id/editUnits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/text_margin"
+                    android:background="@drawable/rounded_corner_edit"
+                    android:ems="5"
+                    android:gravity="center_horizontal"
+                    android:maxEms="5"
+                    android:minEms="5"
+                    android:minLines="1"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_size_large"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/text_bottom_margin"
+                    android:text="@{String.format(@string/amount_currency, product.symbol)}"
+                    android:textColor="@color/textBuyColor"
+                    android:textSize="@dimen/text_size_small" />
+
+                <EditText
+                    android:id="@+id/editAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/edit_text_margin"
+                    android:background="@drawable/rounded_corner_edit"
+                    android:ems="5"
+                    android:gravity="center_horizontal"
+                    android:maxEms="5"
+                    android:minEms="5"
+                    android:minLines="1"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/text_size_large"
+                    android:inputType="numberDecimal" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/confirmButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/button_selector"
+            android:textAllCaps="false"
+            android:text="@string/confirm_button" />
+
     </RelativeLayout>
+
 </layout>

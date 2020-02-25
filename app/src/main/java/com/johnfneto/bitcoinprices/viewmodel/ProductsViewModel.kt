@@ -1,12 +1,12 @@
 package com.johnfneto.bitcoinprices.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.johnfneto.bitcoinprices.models.ProductModel
 import com.johnfneto.bitcoinprices.models.ProductsListModel
 import com.johnfneto.bitcoinprices.services.ProductsApi
 import com.johnfneto.bitcoinprices.services.Service
+import com.johnfneto.bitcoinprices.utils.DataProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,7 +26,7 @@ class ProductsViewModel : ViewModel() {
                 processResponse(response.body()!!)
             }
             else {
-                Log.d(TAG, "error ${response.errorBody()}")
+                DataProvider.errorStatus.postValue(true)
             }
         }
     }
@@ -44,8 +44,9 @@ class ProductsViewModel : ViewModel() {
             val item = productsListModel.getField<ProductModel>(product.name)!!
             item.currency = product.name.toUpperCase(Locale.ROOT) + " - " + item.symbol
             productsList.add(item)
-            Log.d(TAG, "product = ${item.currency}")
+            //Log.d(TAG, "product = ${item.currency}")
         }
+        DataProvider.productsList.postValue(productsList)
     }
 
     @Throws(IllegalAccessException::class, ClassCastException::class)
