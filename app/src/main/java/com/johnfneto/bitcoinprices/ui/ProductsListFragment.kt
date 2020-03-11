@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.johnfneto.bitcoinprices.R
-import com.johnfneto.bitcoinprices.models.ProductModel
+import com.johnfneto.bitcoinprices.models.BitcoinModel
 import com.johnfneto.bitcoinprices.utils.DataProvider
 import com.johnfneto.bitcoinprices.utils.TradeType
 import kotlinx.android.synthetic.main.fragment_products_list.*
@@ -21,7 +21,7 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list),
     private val TAG = javaClass.simpleName
 
     private lateinit var productsAdapter: ProductsAdapter
-    private var productsList = mutableListOf<ProductModel>()
+    private var productsList = mutableListOf<BitcoinModel?>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -33,16 +33,16 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list),
 
     private fun setupDataObserver() {
         DataProvider.productsList.observe(viewLifecycleOwner, Observer { liveProductsList ->
-            DataProvider.productsList.value?.let {
 
-                if (DataProvider.productsList.value != productsList) {
-                    productsList.clear()
-                    productsList.addAll(DataProvider.productsList.value!!)
-                    productsAdapter.notifyDataSetChanged()
-                }
-                swipeContainer.isRefreshing = false
+            if (liveProductsList.productsList != productsList) {
+                productsList.clear()
+                productsList.addAll(liveProductsList.productsList)
+                productsAdapter.notifyDataSetChanged()
             }
-        })    }
+            swipeContainer.isRefreshing = false
+
+        })
+    }
 
     private fun setupRecyclerView() {
         val itemDecorator =
@@ -62,11 +62,11 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list),
 
     private val onBuyClickListener =
         View.OnClickListener { view ->
-            var product: ProductModel
+            var product: BitcoinModel
             val viewHolder = view.tag as RecyclerView.ViewHolder
             val position = viewHolder.adapterPosition
             DataProvider.productsList.value?.let { productsList ->
-                product = productsList[position]
+                product = productsList.productsList[position]!!
                 val action = ProductsListFragmentDirections.actionGotoProduct(
                     product.currency,
                     TradeType.BUY
@@ -77,11 +77,11 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list),
 
     private val onSellClickListener =
         View.OnClickListener { view ->
-            var product: ProductModel
+            var product: BitcoinModel
             val viewHolder = view.tag as RecyclerView.ViewHolder
             val position = viewHolder.adapterPosition
             DataProvider.productsList.value?.let { productsList ->
-                product = productsList[position]
+                product = productsList.productsList[position]!!
                 val action = ProductsListFragmentDirections.actionGotoProduct(
                     product.currency,
                     TradeType.SELL

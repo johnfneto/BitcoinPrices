@@ -16,7 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.johnfneto.bitcoinprices.R
 import com.johnfneto.bitcoinprices.databinding.FragmentProductBinding
-import com.johnfneto.bitcoinprices.models.ProductModel
+import com.johnfneto.bitcoinprices.models.BitcoinModel
 import com.johnfneto.bitcoinprices.utils.DataProvider
 import com.johnfneto.bitcoinprices.utils.KeyboardToggleListener
 import com.johnfneto.bitcoinprices.utils.TradeType
@@ -34,7 +34,7 @@ class ProductFragment : Fragment() {
 
     private lateinit var binding: FragmentProductBinding
     private var operation = TradeType.SELL
-    private lateinit var product: ProductModel
+    private lateinit var product: BitcoinModel
     private lateinit var productCurrency: String
     private var latestSellPrice = 0.0
     private var latestBuyPrice = 0.0
@@ -83,8 +83,8 @@ class ProductFragment : Fragment() {
 
     private fun setupDataObserver() {
         DataProvider.productsList.observe(viewLifecycleOwner, Observer { productsList ->
-            productsList.find { country ->
-                country.currency == productCurrency
+            productsList.productsList.find { country ->
+                country!!.currency == productCurrency
             }?.let { updatedProduct ->
                 product = updatedProduct
                 binding.product = updatedProduct
@@ -140,7 +140,7 @@ class ProductFragment : Fragment() {
         }
     }
 
-    private fun flashPrices(updatedProduct: ProductModel) {
+    private fun flashPrices(updatedProduct: BitcoinModel) {
         if (latestBuyPrice != 0.0) {
             if (updatedProduct.buy != latestBuyPrice) {
                 textFlash(binding.buyPrice)

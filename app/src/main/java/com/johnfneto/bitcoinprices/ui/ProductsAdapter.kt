@@ -7,10 +7,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.johnfneto.bitcoinprices.R
 import com.johnfneto.bitcoinprices.databinding.ItemListProductBinding
-import com.johnfneto.bitcoinprices.models.ProductModel
+import com.johnfneto.bitcoinprices.models.BitcoinModel
 
 class ProductsAdapter(
-    private var productsList: List<ProductModel>,
+    private var productsList: MutableList<BitcoinModel?>,
     private val onBuyListener: View.OnClickListener,
     private val onSellListener: View.OnClickListener
 )
@@ -38,7 +38,7 @@ class ProductsAdapter(
     inner class DataBindingViewHolder(private val binding: ItemListProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: ProductModel) {
+        fun bind(item: BitcoinModel?) {
             binding.sellButton.tag = this
             binding.buyButton.tag = this
             binding.apply {

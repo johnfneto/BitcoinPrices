@@ -1,11 +1,12 @@
 package com.johnfneto.bitcoinprices.utils
 
 import androidx.lifecycle.MutableLiveData
-import com.johnfneto.bitcoinprices.models.ProductModel
+import com.johnfneto.bitcoinprices.models.BitcoinModel
+import com.johnfneto.bitcoinprices.models.ProductsList
 
 object DataProvider {
 
-    var productsList = MutableLiveData<List<ProductModel>>()
+    var productsList = MutableLiveData<ProductsList>()
 
     var errorStatus: MutableLiveData<Boolean> = MutableLiveData()
 }

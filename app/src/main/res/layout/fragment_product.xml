@@ -5,11 +5,11 @@
 
         <import type="com.johnfneto.bitcoinprices.utils.TradeType" />
         <import type="com.johnfneto.bitcoinprices.utils.Utils" />
-        <import type="com.johnfneto.bitcoinprices.models.ProductModel" />
+        <import type="com.johnfneto.bitcoinprices.models.BitcoinModel" />
 
         <variable
             name="product"
-            type="com.johnfneto.bitcoinprices.models.ProductModel" />
+            type="com.johnfneto.bitcoinprices.models.BitcoinModel" />
 
         <variable
             name="enableButton"
