@@ -7,70 +7,48 @@ data class ProductsList(
     @SingleToArray
     @Json(name = "USD")
     val uSD: BitcoinModel,
-
     @Json(name = "AUD")
     val aUD: BitcoinModel,
-
     @Json(name = "BRL")
     val bRL: BitcoinModel,
-
     @Json(name = "CAD")
     val cAD: BitcoinModel,
-
     @Json(name = "CHF")
     val cHF: BitcoinModel,
-
     @Json(name = "CLP")
     val cLP: BitcoinModel,
-
     @Json(name = "CNY")
     val cNY: BitcoinModel,
-
     @Json(name = "DKK")
     val dKK: BitcoinModel,
-
     @Json(name = "EUR")
     val eUR: BitcoinModel,
-
     @Json(name = "GBP")
     val gBP: BitcoinModel,
-
     @Json(name = "HKD")
     val hKD: BitcoinModel,
-
     @Json(name = "INR")
     val iNR: BitcoinModel,
-
     @Json(name = "ISK")
     val iSK: BitcoinModel,
-
     @Json(name = "JPY")
     val jPY: BitcoinModel,
-
     @Json(name = "KRW")
     val kRW: BitcoinModel,
-
     @Json(name = "NZD")
     val nZD: BitcoinModel,
-
     @Json(name = "PLN")
     val pLN: BitcoinModel,
-
     @Json(name = "RUB")
     val rUB: BitcoinModel,
-
     @Json(name = "SEK")
     val sEK: BitcoinModel,
-
     @Json(name = "SGD")
     val sGD: BitcoinModel,
-
     @Json(name = "THB")
     val tHB: BitcoinModel,
-
     @Json(name = "TWD")
     val tWD: BitcoinModel
-
 ) {
     private val currencyUSD = uSD.also {
         it.currency = "USD"

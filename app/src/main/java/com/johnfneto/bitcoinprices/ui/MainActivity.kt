@@ -10,11 +10,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.johnfneto.bitcoinprices.R
-import com.johnfneto.bitcoinprices.utils.DataProvider
 import com.johnfneto.bitcoinprices.utils.Utils
+import com.johnfneto.bitcoinprices.viewmodel.ProductsRepository
 import com.johnfneto.bitcoinprices.viewmodel.ProductsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
 
 const val POOL_FREQUENCY = 15000L
@@ -22,7 +21,6 @@ const val POOL_FREQUENCY = 15000L
 class MainActivity : AppCompatActivity() {
     private val TAG = javaClass.simpleName
 
-    private val timer = Timer()
     lateinit var viewModel: ProductsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         navSetup()
 
         viewModel = ViewModelProvider(this).get(ProductsViewModel::class.java)
-        DataProvider.errorStatus.observe(this, Observer { error ->
+        ProductsRepository.errorStatus.observe(this, Observer { error ->
             if (error) {
                 Toast.makeText(
                     this,
@@ -40,15 +38,6 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
         })
-
-        timer.scheduleAtFixedRate(
-            object : TimerTask() {
-                override fun run() {
-                    refreshProductsList()
-                }
-            },
-            0, POOL_FREQUENCY
-        )
     }
 
     fun refreshProductsList() {
@@ -71,10 +60,4 @@ class MainActivity : AppCompatActivity() {
         return (Navigation.findNavController(this, R.id.nav_host_fragment).navigateUp()
                 || super.onSupportNavigateUp())
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        timer.cancel()
-    }
-
 }

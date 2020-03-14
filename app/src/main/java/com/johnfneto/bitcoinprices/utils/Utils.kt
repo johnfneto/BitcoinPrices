@@ -6,6 +6,10 @@ import android.net.NetworkCapabilities
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.RelativeSizeSpan
+import com.johnfneto.bitcoinprices.models.ProductsList
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
+import retrofit2.Response
 
 object Utils {
 
@@ -23,6 +27,12 @@ object Utils {
             }
         }
     }
+
+    fun buildErrorResponse(message: String?) = Response.error<ProductsList>(
+        400,
+        "{\"key\":[$message]}"
+            .toResponseBody("application/json".toMediaTypeOrNull())
+    )
 
     @JvmStatic
     fun formatPriceSize(price: Double): SpannableString {

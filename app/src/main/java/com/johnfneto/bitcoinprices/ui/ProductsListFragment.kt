@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.johnfneto.bitcoinprices.R
 import com.johnfneto.bitcoinprices.models.BitcoinModel
-import com.johnfneto.bitcoinprices.utils.DataProvider
 import com.johnfneto.bitcoinprices.utils.TradeType
+import com.johnfneto.bitcoinprices.viewmodel.ProductsRepository
 import kotlinx.android.synthetic.main.fragment_products_list.*
 
 class ProductsListFragment : Fragment(R.layout.fragment_products_list),
@@ -32,7 +32,7 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list),
     }
 
     private fun setupDataObserver() {
-        DataProvider.productsList.observe(viewLifecycleOwner, Observer { liveProductsList ->
+        ProductsRepository.productsList.observe(viewLifecycleOwner, Observer { liveProductsList ->
 
             if (liveProductsList.productsList != productsList) {
                 productsList.clear()
@@ -62,33 +62,30 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list),
 
     private val onBuyClickListener =
         View.OnClickListener { view ->
-            var product: BitcoinModel
-            val viewHolder = view.tag as RecyclerView.ViewHolder
-            val position = viewHolder.adapterPosition
-            DataProvider.productsList.value?.let { productsList ->
-                product = productsList.productsList[position]!!
-                val action = ProductsListFragmentDirections.actionGotoProduct(
-                    product.currency,
-                    TradeType.BUY
-                )
-                findNavController().navigate(action)
-            }
+            gotoProductsListFragment(view, TradeType.BUY)
         }
 
     private val onSellClickListener =
         View.OnClickListener { view ->
-            var product: BitcoinModel
-            val viewHolder = view.tag as RecyclerView.ViewHolder
-            val position = viewHolder.adapterPosition
-            DataProvider.productsList.value?.let { productsList ->
-                product = productsList.productsList[position]!!
-                val action = ProductsListFragmentDirections.actionGotoProduct(
-                    product.currency,
-                    TradeType.SELL
-                )
-                findNavController().navigate(action)
-            }
+            gotoProductsListFragment(view, TradeType.SELL)
         }
+
+    private fun gotoProductsListFragment(
+        view: View,
+        type: TradeType
+    ) {
+        var product: BitcoinModel
+        val viewHolder = view.tag as RecyclerView.ViewHolder
+        val position = viewHolder.adapterPosition
+        ProductsRepository.productsList.value?.let { productsList ->
+            product = productsList.productsList[position]!!
+            val action = ProductsListFragmentDirections.actionGotoProduct(
+                product.currency,
+                type
+            )
+            findNavController().navigate(action)
+        }
+    }
 
     override fun onRefresh() {
         (activity as MainActivity).refreshProductsList()

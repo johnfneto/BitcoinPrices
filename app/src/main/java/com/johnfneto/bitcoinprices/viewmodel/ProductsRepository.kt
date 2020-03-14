@@ -1,10 +1,11 @@
-package com.johnfneto.bitcoinprices.utils
+package com.johnfneto.bitcoinprices.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.johnfneto.bitcoinprices.models.BitcoinModel
 import com.johnfneto.bitcoinprices.models.ProductsList
+import com.johnfneto.bitcoinprices.services.ProductsApi
+import retrofit2.Response
 
-object DataProvider {
+object ProductsRepository {
 
     var productsList = MutableLiveData<ProductsList>()
 

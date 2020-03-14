@@ -17,10 +17,10 @@ import androidx.navigation.fragment.navArgs
 import com.johnfneto.bitcoinprices.R
 import com.johnfneto.bitcoinprices.databinding.FragmentProductBinding
 import com.johnfneto.bitcoinprices.models.BitcoinModel
-import com.johnfneto.bitcoinprices.utils.DataProvider
 import com.johnfneto.bitcoinprices.utils.KeyboardToggleListener
 import com.johnfneto.bitcoinprices.utils.TradeType
 import com.johnfneto.bitcoinprices.utils.Utils
+import com.johnfneto.bitcoinprices.viewmodel.ProductsRepository
 import kotlinx.android.synthetic.main.fragment_product.*
 
 const val FLASH_DURATION = 50L
@@ -82,7 +82,7 @@ class ProductFragment : Fragment() {
     }
 
     private fun setupDataObserver() {
-        DataProvider.productsList.observe(viewLifecycleOwner, Observer { productsList ->
+        ProductsRepository.productsList.observe(viewLifecycleOwner, Observer { productsList ->
             productsList.productsList.find { country ->
                 country!!.currency == productCurrency
             }?.let { updatedProduct ->
@@ -160,13 +160,13 @@ class ProductFragment : Fragment() {
         anim.startOffset = FLASH_OFFSET
         anim.repeatMode = Animation.REVERSE
         anim.repeatCount = FLASH_REPEAT_COUNT
-        textView.setTextColor(resources.getColor(R.color.flashGreenColor))
+        textView.setTextColor(resources.getColor(R.color.flashGreenColor, null))
         textView.startAnimation(anim)
         anim.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationRepeat(p0: Animation?) {}
 
             override fun onAnimationEnd(p0: Animation?) {
-                textView.setTextColor(resources.getColor(R.color.textGreyColor))
+                textView.setTextColor(resources.getColor(R.color.textGreyColor, null))
             }
 
             override fun onAnimationStart(p0: Animation?) {}
