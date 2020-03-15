@@ -19,6 +19,7 @@
     <fragment
         android:id="@+id/productFragment"
         android:name="com.johnfneto.bitcoinprices.ui.ProductFragment"
+        android:label="@string/bitcoin_trade"
         tools:layout="@layout/fragment_product">
         <argument
             android:name="product"

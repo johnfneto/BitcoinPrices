@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Bitcoin Prices</string>
     <string name="bitcoin_prices">Bitcoin prices</string>
+    <string name="bitcoin_trade">Bitcoin trade</string>
     <string name="sell_label">SELL</string>
     <string name="buy_label">BUY</string>
     <string name="level1_label"><![CDATA[Level 1<br/>&caron;]]></string>

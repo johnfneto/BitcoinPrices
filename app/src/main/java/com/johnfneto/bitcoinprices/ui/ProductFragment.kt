@@ -1,15 +1,9 @@
 package com.johnfneto.bitcoinprices.ui
 
-import android.app.Activity
-import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -17,9 +11,9 @@ import androidx.navigation.fragment.navArgs
 import com.johnfneto.bitcoinprices.R
 import com.johnfneto.bitcoinprices.databinding.FragmentProductBinding
 import com.johnfneto.bitcoinprices.models.BitcoinModel
-import com.johnfneto.bitcoinprices.utils.KeyboardToggleListener
 import com.johnfneto.bitcoinprices.utils.TradeType
 import com.johnfneto.bitcoinprices.utils.Utils
+import com.johnfneto.bitcoinprices.utils.Utils.textFlash
 import com.johnfneto.bitcoinprices.viewmodel.ProductsRepository
 import kotlinx.android.synthetic.main.fragment_product.*
 
@@ -70,27 +64,25 @@ class ProductFragment : Fragment() {
             operation = TradeType.BUY
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            level1_label.text =
-                Html.fromHtml(getString(R.string.level1_label), Html.FROM_HTML_MODE_COMPACT)
-        } else {
-            level1_label.text =
-                Html.fromHtml(getString(R.string.level1_label))
-        }
-
         confirmButton.isEnabled = false
     }
 
     private fun setupDataObserver() {
-        ProductsRepository.productsList.observe(viewLifecycleOwner, Observer { productsList ->
-            productsList.productsList.find { country ->
+        ProductsRepository.products.observe(viewLifecycleOwner, Observer { products ->
+            products.productsList.find { country ->
                 country!!.currency == productCurrency
             }?.let { updatedProduct ->
                 product = updatedProduct
                 binding.product = updatedProduct
-                flashPrices(updatedProduct)
                 latestBuyPrice = updatedProduct.buy
                 latestSellPrice = updatedProduct.sell
+            }
+        })
+
+        ProductsRepository.flashPrice.observe(viewLifecycleOwner, Observer { flashPrice ->
+            if (flashPrice) {
+                textFlash(requireContext(), binding.buyPrice)
+                textFlash(requireContext(), binding.sellPrice)
             }
         })
     }
@@ -132,57 +124,17 @@ class ProductFragment : Fragment() {
                 }
             }
             editAmount -> {
-                when (operation) {
-                    TradeType.SELL -> editAmount.setText(Utils.formatPrice(editUnits.text.toString().toDouble() * product.sell))
-                    TradeType.BUY -> editAmount.setText(Utils.formatPrice(editUnits.text.toString().toDouble() * product.buy))
+                if (editUnits.text.isNotEmpty()) {
+                    when (operation) {
+                        TradeType.SELL -> editAmount.setText(Utils.formatPrice(editUnits.text.toString().toDouble() * product.sell))
+                        TradeType.BUY -> editAmount.setText(Utils.formatPrice(editUnits.text.toString().toDouble() * product.buy))
+                    }
                 }
             }
         }
     }
 
-    private fun flashPrices(updatedProduct: BitcoinModel) {
-        if (latestBuyPrice != 0.0) {
-            if (updatedProduct.buy != latestBuyPrice) {
-                textFlash(binding.buyPrice)
-            }
-        }
-
-        if (latestSellPrice != 0.0) {
-            if (updatedProduct.sell != latestSellPrice) {
-                textFlash(binding.sellPrice)
-            }
-        }
-    }
-
-    private fun textFlash(textView: TextView) {
-        val anim: Animation = AlphaAnimation(0.0f, 1.0f)
-        anim.duration = FLASH_DURATION
-        anim.startOffset = FLASH_OFFSET
-        anim.repeatMode = Animation.REVERSE
-        anim.repeatCount = FLASH_REPEAT_COUNT
-        textView.setTextColor(resources.getColor(R.color.flashGreenColor, null))
-        textView.startAnimation(anim)
-        anim.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationRepeat(p0: Animation?) {}
-
-            override fun onAnimationEnd(p0: Animation?) {
-                textView.setTextColor(resources.getColor(R.color.textGreyColor, null))
-            }
-
-            override fun onAnimationStart(p0: Animation?) {}
-        })
-    }
-
     private fun setTitle(title: String) {
         (requireActivity() as MainActivity).supportActionBar?.title = title
-    }
-
-    private fun Activity.addKeyboardToggleListener(onKeyboardToggleAction: (shown: Boolean) -> Unit): KeyboardToggleListener? {
-        val root = findViewById<View>(android.R.id.content)
-        val listener = KeyboardToggleListener(root, onKeyboardToggleAction)
-        return root?.viewTreeObserver?.run {
-            addOnGlobalLayoutListener(listener)
-            listener
-        }
     }
 }

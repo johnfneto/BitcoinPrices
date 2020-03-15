@@ -3,7 +3,7 @@ package com.johnfneto.bitcoinprices.models
 import com.johnfneto.bitcoinprices.utils.SingleToArray
 import com.squareup.moshi.Json
 
-data class ProductsList(
+data class Products(
     @SingleToArray
     @Json(name = "USD")
     val uSD: BitcoinModel,

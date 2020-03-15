@@ -32,7 +32,7 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list),
     }
 
     private fun setupDataObserver() {
-        ProductsRepository.productsList.observe(viewLifecycleOwner, Observer { liveProductsList ->
+        ProductsRepository.products.observe(viewLifecycleOwner, Observer { liveProductsList ->
 
             if (liveProductsList.productsList != productsList) {
                 productsList.clear()
@@ -40,7 +40,6 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list),
                 productsAdapter.notifyDataSetChanged()
             }
             swipeContainer.isRefreshing = false
-
         })
     }
 
@@ -77,7 +76,7 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list),
         var product: BitcoinModel
         val viewHolder = view.tag as RecyclerView.ViewHolder
         val position = viewHolder.adapterPosition
-        ProductsRepository.productsList.value?.let { productsList ->
+        ProductsRepository.products.value?.let { productsList ->
             product = productsList.productsList[position]!!
             val action = ProductsListFragmentDirections.actionGotoProduct(
                 product.currency,

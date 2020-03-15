@@ -1,6 +1,8 @@
 package com.johnfneto.bitcoinprices.ui
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -10,7 +12,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.johnfneto.bitcoinprices.R
-import com.johnfneto.bitcoinprices.utils.Utils
+import com.johnfneto.bitcoinprices.utils.KeyboardToggleListener
 import com.johnfneto.bitcoinprices.viewmodel.ProductsRepository
 import com.johnfneto.bitcoinprices.viewmodel.ProductsViewModel
 import kotlinx.android.synthetic.main.activity_main.*
@@ -41,12 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun refreshProductsList() {
-        if (Utils.isInternetAvailable(this)) {
-            viewModel.getProductsList()
-        } else {
-            Toast.makeText(this, resources.getString(R.string.no_internet), Toast.LENGTH_SHORT)
-                .show()
-        }
+        viewModel.getProductsList()
     }
 
     private fun navSetup() {
@@ -54,10 +51,28 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         val appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        navController.addOnDestinationChangedListener { _, destination, arguments ->
+            if (destination.label.toString() == resources.getString(R.string.bitcoin_trade)) {
+                arguments?.let {
+                    viewModel.watchCurrency(arguments.getString("product"))
+                }
+            }
+
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
         return (Navigation.findNavController(this, R.id.nav_host_fragment).navigateUp()
                 || super.onSupportNavigateUp())
+    }
+
+    fun addKeyboardToggleListener(onKeyboardToggleAction: (shown: Boolean) -> Unit): KeyboardToggleListener? {
+        val root = findViewById<View>(android.R.id.content)
+        val listener = KeyboardToggleListener(root, onKeyboardToggleAction)
+        return root?.viewTreeObserver?.run {
+            addOnGlobalLayoutListener(listener)
+            listener
+        }
     }
 }

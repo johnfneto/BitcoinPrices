@@ -45,7 +45,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@{operation == TradeType.SELL ? @color/sellBackground : @color/colorBackground}"
+                    android:background="@{operation == TradeType.SELL ? @color/colorSell : @color/colorBackground}"
                     android:orientation="vertical">
 
                     <TextView
@@ -61,7 +61,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/text_margin"
-                        android:text="@{Utils.formatPriceSize(product.sell)}"
+                        android:text="@{product.sellPriceFormatted}"
                         android:textColor="@color/textGreyColor"
                         android:textSize="@dimen/text_size_xlarge" />
 
@@ -80,7 +80,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@{operation == TradeType.BUY ? @color/buyBackground : @color/colorBackground}"
+                    android:background="@{operation == TradeType.BUY ? @color/colorBuy : @color/colorBackground}"
                     android:orientation="vertical">
 
                     <TextView
@@ -98,7 +98,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end"
                         android:layout_margin="@dimen/text_margin"
-                        android:text="@{Utils.formatPriceSize(product.buy)}"
+                        android:text="@{product.buyPriceFormatted}"
                         android:textColor="@color/textGreyColor"
                         android:textSize="@dimen/text_size_xlarge" />
 
@@ -126,7 +126,7 @@
                 android:layout_marginTop="@dimen/text_margin"
                 android:layout_marginEnd="@dimen/text_margin"
                 android:layout_marginBottom="@dimen/text_margin"
-                android:text="@{Utils.calculateSpread(product.buy, product.sell)}"
+                android:text="@{product.spread}"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_size_small" />
 
@@ -139,7 +139,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:text="@string/level1_label"
+                android:text="@{Utils.formatLevel1Text()}"
                 android:textColor="@color/colorWhite"
                 android:background="@{operation == TradeType.SELL ? @drawable/label_level1_sell : @drawable/label_level1_buy}"
                 android:textSize="@dimen/text_size_small" />
@@ -200,7 +200,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="@dimen/text_bottom_margin"
-                    android:text="@{String.format(@string/amount_currency, product.symbol)}"
+                    android:text="@{product.formattedAmountLabel}"
                     android:textColor="@color/textBuyColor"
                     android:textSize="@dimen/text_size_small" />
 

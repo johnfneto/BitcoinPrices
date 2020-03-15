@@ -1,13 +1,13 @@
 package com.johnfneto.bitcoinprices.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import com.johnfneto.bitcoinprices.models.ProductsList
-import com.johnfneto.bitcoinprices.services.ProductsApi
-import retrofit2.Response
+import com.johnfneto.bitcoinprices.models.Products
 
 object ProductsRepository {
 
-    var productsList = MutableLiveData<ProductsList>()
+    var products = MutableLiveData<Products>()
+
+    var flashPrice: MutableLiveData<Boolean> = MutableLiveData()
 
     var errorStatus: MutableLiveData<Boolean> = MutableLiveData()
 }

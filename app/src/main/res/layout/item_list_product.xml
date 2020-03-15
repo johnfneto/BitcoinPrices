@@ -52,7 +52,7 @@
                     android:minEms="5"
                     android:minLines="1"
                     android:padding="@dimen/text_margin"
-                    android:text="@{Utils.formatPriceSize(product.buy)}"
+                    android:text="@{product.buyPriceFormatted}"
                     android:textColor="@color/textColor"
                     android:textSize="@dimen/text_size_medium" />
 
@@ -69,7 +69,7 @@
                     android:minEms="5"
                     android:minLines="1"
                     android:padding="@dimen/text_margin"
-                    android:text="@{Utils.formatPriceSize(product.sell)}"
+                    android:text="@{product.sellPriceFormatted}"
                     android:textColor="@color/textColor"
                     android:textSize="@dimen/text_size_medium" />
             </LinearLayout>
@@ -79,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@{Utils.calculateSpread(product.buy, product.sell)}"
+                android:text="@{product.spread}"
                 android:textColor="@color/colorWhite" />
 
         </LinearLayout>
