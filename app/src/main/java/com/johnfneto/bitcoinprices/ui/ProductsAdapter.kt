@@ -1,18 +1,17 @@
 package com.johnfneto.bitcoinprices.ui
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.johnfneto.bitcoinprices.R
 import com.johnfneto.bitcoinprices.databinding.ItemListProductBinding
 import com.johnfneto.bitcoinprices.models.BitcoinModel
+import com.johnfneto.bitcoinprices.utils.TradeType
 
 class ProductsAdapter(
     private var productsList: MutableList<BitcoinModel?>,
-    private val onBuyListener: View.OnClickListener,
-    private val onSellListener: View.OnClickListener
+    private val callback: (BitcoinModel?, TradeType) -> Unit
 )
     : RecyclerView.Adapter<ProductsAdapter.DataBindingViewHolder>() {
     private val TAG = javaClass.simpleName
@@ -43,8 +42,13 @@ class ProductsAdapter(
             binding.buyButton.tag = this
             binding.apply {
                 product = item
-                sellButton.setOnClickListener(onSellListener)
-                buyButton.setOnClickListener(onBuyListener)
+
+                sellButton.setOnClickListener {
+                    callback(item, TradeType.SELL)
+                }
+                buyButton.setOnClickListener {
+                    callback(item, TradeType.BUY)
+                }
             }
         }
     }

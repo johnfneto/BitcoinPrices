@@ -8,7 +8,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.johnfneto.bitcoinprices.R
 import com.johnfneto.bitcoinprices.models.BitcoinModel
@@ -49,7 +48,13 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list),
         itemDecorator.setDrawable(requireContext().resources.getDrawable(R.drawable.divider, null))
 
         productsAdapter =
-            ProductsAdapter(productsList, onBuyClickListener, onSellClickListener)
+            ProductsAdapter(productsList
+            ) { product, tradeType ->
+                product?.let {
+                    gotoProductsListFragment(product, tradeType)
+                }
+            }
+
         productsRecyclerView.apply {
             layoutManager = LinearLayoutManager(activity)
             adapter = productsAdapter
@@ -59,31 +64,15 @@ class ProductsListFragment : Fragment(R.layout.fragment_products_list),
         }
     }
 
-    private val onBuyClickListener =
-        View.OnClickListener { view ->
-            gotoProductsListFragment(view, TradeType.BUY)
-        }
-
-    private val onSellClickListener =
-        View.OnClickListener { view ->
-            gotoProductsListFragment(view, TradeType.SELL)
-        }
-
     private fun gotoProductsListFragment(
-        view: View,
+        product: BitcoinModel,
         type: TradeType
     ) {
-        var product: BitcoinModel
-        val viewHolder = view.tag as RecyclerView.ViewHolder
-        val position = viewHolder.adapterPosition
-        ProductsRepository.products.value?.let { productsList ->
-            product = productsList.productsList[position]!!
-            val action = ProductsListFragmentDirections.actionGotoProduct(
-                product.currency,
-                type
-            )
-            findNavController().navigate(action)
-        }
+        val action = ProductsListFragmentDirections.actionGotoProduct(
+            product.currency,
+            type
+        )
+        findNavController().navigate(action)
     }
 
     override fun onRefresh() {
